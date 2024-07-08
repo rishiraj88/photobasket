@@ -1,13 +1,45 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
 import { Form } from 'react-bootstrap'
+import axios from 'axios'
 
 const API_BASE_URL = "https://api.unsplash.com/search/photos?"
 const CLIENT_ID = import.meta.env.VITE_API_KEY
 
 function App() {
+  const searchControl = useRef<HTMLInputElement>(null!)
+
+  const [currentPagePointer, setCurrentPagePointer] = useState(0)
+
+  const [searchResultWithMetadata, setSearchResultWithMetadata] = useState({} as SearchResultWithMetadataType)
+
+  const getPhotos = async () => {
+    try {
+      if (searchControl.current.value.trim()) {
+        const { data } = await axios.get(
+          `${API_BASE_URL}query=${searchControl.current.value.trim()}
+      &client_id=${CLIENT_ID}&page=${currentPagePointer}&per_page=12`
+        )
+        setSearchResultWithMetadata({
+          searchedPhotos: data.results,
+          totalPhotoCount: data.total,
+          numberOfPages: data.total_pages
+        })
+      }
+    } catch (error) {
+      setCurrentPagePointer(0)
+      console.log(error)
+    }
+  }
+
+  const handleSelection = (recommendation: string) => {
+    searchControl.current.value = recommendation.trim()
+    getPhotos()
+    setCurrentPagePointer(1)
+
+  }
 
   return (
     <div className='container'>
@@ -27,6 +59,8 @@ function App() {
         <div onClick={() => handleSelection("bodyart")}>bodyart</div>
         <div onClick={() => handleSelection("people")}>people</div>
       </div>
+
+
 
     </div >)
 }
