@@ -12,12 +12,14 @@ function App() {
   const searchControl = useRef<HTMLInputElement>(null!)
 
   const [currentPagePointer, setCurrentPagePointer] = useState(0)
-
   const [searchResultWithMetadata, setSearchResultWithMetadata] = useState({} as SearchResultWithMetadataType)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const getPhotos = async () => {
     try {
       if (searchControl.current.value.trim()) {
+        setErrorMessage('')
+
         const { data } = await axios.get(
           `${API_BASE_URL}query=${searchControl.current.value.trim()}
       &client_id=${CLIENT_ID}&page=${currentPagePointer}&per_page=12`
@@ -30,22 +32,29 @@ function App() {
       }
     } catch (error) {
       setCurrentPagePointer(0)
+      setErrorMessage("No photos found. Please try with different search parameters.")
+
       console.log(error)
     }
   }
 
 
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setCurrentPagePointer(1)
-    getPhotos()
+    const loadResults = () => {
+      if ("" == errorMessage) {
+        setCurrentPagePointer(1)
+        getPhotos()
+      }
     }
-
+    const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      loadResults()
+    }
+  
   const handleSelection = (recommendation: string) => {
     searchControl.current.value = recommendation.trim()
-    getPhotos()
-    setCurrentPagePointer(1)
-
+    const oldPagePointer = currentPagePointer
+    if (1 == oldPagePointer) getPhotos()
+    else if ("" == errorMessage) setCurrentPagePointer(1)
   }
 
   return (
