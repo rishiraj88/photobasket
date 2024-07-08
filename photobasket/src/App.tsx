@@ -1,35 +1,68 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './index.css'
+import { Form } from 'react-bootstrap'
+import axios from 'axios'
+
+const API_BASE_URL = "https://api.unsplash.com/search/photos?"
+const CLIENT_ID = import.meta.env.VITE_API_KEY
 
 function App() {
-  const [count, setCount] = useState(0)
+  const searchControl = useRef<HTMLInputElement>(null!)
+
+  const [currentPagePointer, setCurrentPagePointer] = useState(0)
+
+  const [searchResultWithMetadata, setSearchResultWithMetadata] = useState({} as SearchResultWithMetadataType)
+
+  const getPhotos = async () => {
+    try {
+      if (searchControl.current.value.trim()) {
+        const { data } = await axios.get(
+          `${API_BASE_URL}query=${searchControl.current.value.trim()}
+      &client_id=${CLIENT_ID}&page=${currentPagePointer}&per_page=12`
+        )
+        setSearchResultWithMetadata({
+          searchedPhotos: data.results,
+          totalPhotoCount: data.total,
+          numberOfPages: data.total_pages
+        })
+      }
+    } catch (error) {
+      setCurrentPagePointer(0)
+      console.log(error)
+    }
+  }
+
+  const handleSelection = (recommendation: string) => {
+    searchControl.current.value = recommendation.trim()
+    getPhotos()
+    setCurrentPagePointer(1)
+
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='container'>
+      <h1 className="title">Photo Bucket</h1>
+
+      <div className="search-section">
+        <Form onSubmit={handleSearchSubmit}>
+          <Form.Control className='search-input' type="search" placeholder='What may we present?' ref={searchControl} />
+        </Form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+      <div className="recommendation">
+        <div onClick={() => handleSelection("europe")}>europe</div>
+        <div onClick={() => handleSelection("apartment")}>apartment</div>
+        <div onClick={() => handleSelection("computer")}>computer</div>
+        <div onClick={() => handleSelection("design")}>design</div>
+        <div onClick={() => handleSelection("bodyart")}>bodyart</div>
+        <div onClick={() => handleSelection("people")}>people</div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+
+
+    </div >)
 }
 
 export default App
