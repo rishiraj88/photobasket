@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
@@ -33,6 +33,13 @@ function App() {
       console.log(error)
     }
   }
+
+
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setCurrentPagePointer(1)
+    getPhotos()
+    }
 
   const handleSelection = (recommendation: string) => {
     searchControl.current.value = recommendation.trim()
