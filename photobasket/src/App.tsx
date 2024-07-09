@@ -8,6 +8,12 @@ import axios from 'axios'
 const API_BASE_URL = "https://api.unsplash.com/search/photos?"
 const CLIENT_ID = import.meta.env.VITE_API_KEY
 
+type SearchResultWithMetadataType = {
+  searchedPhotos: Random[]
+  totalPhotoCount: number
+  numberOfPages: number
+}
+
 function App() {
   const searchControl = useRef<HTMLInputElement>(null!)
 
@@ -77,6 +83,21 @@ function App() {
       </div>
 
 
+      <div className="photos-results">
+        {errorMessage ? <h4>{errorMessage}</h4> :
+          <>
+            <div className="result-summary">
+              {(0 != searchResultWithMetadata.totalPhotoCount) ? searchResultWithMetadata.totalPhotoCount : ""} Photos for you, from the world, of the universe!
+            </div>
+            {
+              searchResultWithMetadata.searchedPhotos?.map(photo => {
+                return photo && (<a href={photo.urls.regular} target='_blank' key={photo.id}>
+                  <img src={photo.urls.thumb} alt="photo.alt_description" className='image'></img>
+                </a>)
+              }
+              )}
+          </>}
+      </div>
 
     </div >)
 }
