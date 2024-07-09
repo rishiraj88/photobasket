@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './index.css'
 import { Form } from 'react-bootstrap'
 import axios from 'axios'
+import Nav from './components/Nav'
 
 const API_BASE_URL = "https://api.unsplash.com/search/photos?"
 const CLIENT_ID = import.meta.env.VITE_API_KEY
@@ -98,6 +99,10 @@ function App() {
               )}
           </>}
       </div>
+
+      {
+        0 != searchResultWithMetadata.totalPhotoCount && <Nav key={currentPagePointer} pageNumber={currentPagePointer} pageNumberUpdater={setCurrentPagePointer} totalPages={searchResultWithMetadata.numberOfPages} />
+      }   
 
     </div >)
 }
