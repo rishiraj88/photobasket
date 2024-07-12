@@ -5,6 +5,7 @@ import './index.css'
 import { Form } from 'react-bootstrap'
 import axios from 'axios'
 import Nav from './components/Nav'
+import Recommender from './components/Recommender'
 
 const API_BASE_URL = "https://api.unsplash.com/search/photos?"
 const CLIENT_ID = import.meta.env.VITE_API_KEY
@@ -74,15 +75,7 @@ function App() {
         </Form>
       </div>
 
-      <div className="recommendation">
-        <div onClick={() => handleSelection("europe")}>europe</div>
-        <div onClick={() => handleSelection("apartment")}>apartment</div>
-        <div onClick={() => handleSelection("computer")}>computer</div>
-        <div onClick={() => handleSelection("design")}>design</div>
-        <div onClick={() => handleSelection("bodyart")}>bodyart</div>
-        <div onClick={() => handleSelection("people")}>people</div>
-      </div>
-
+      <Recommender handleSelection={handleSelection} />
 
       <div className="photos-results">
         {errorMessage ? <h4>{errorMessage}</h4> :
