@@ -1,4 +1,4 @@
 # photobasket
 Photo Search Tool implemented with React and TypeScript
 
-Development is active now.
+Second phase od development is starting now.
