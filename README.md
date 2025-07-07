@@ -1,5 +1,5 @@
 # photobasket
-Photo Search Tool implemented with React and TypeScript
+Photo Search Tool implemented with React/TypeScript
 
 ## Photo Basket (an online photo library)
 - Photo Search Tool implemented with RESTful APIs in Backend, React in Frontend and TypeScript all over.
