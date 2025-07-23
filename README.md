@@ -1,4 +1,4 @@
-# photobasket
+# Photo Basket
 Photo Search Tool implemented with React/TypeScript
 
 ## Photo Basket (an online photo library)
