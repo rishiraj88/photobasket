@@ -1,5 +1,7 @@
 # Photo Basket
-Photo Search implemented with React/TypeScript
+Photo Search implemented with the following technologies:
+- Web UI with React/TypeScript
+- WIP backend APIs with NodeJS, Spring Boot and FastAPI
 
 ## Photo Basket (an online photo library)
 - Photo Search Tool implemented with RESTful APIs in Backend, React in Frontend; with TypeScript in full stack.
