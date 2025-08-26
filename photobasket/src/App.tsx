@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap'
 import axios from 'axios'
 import Nav from './components/Nav'
 import Recommender from './components/Recommender'
+import { Random } from 'random'
 
 const API_BASE_URL = "https://api.unsplash.com/search/photos?"
 const CLIENT_ID = import.meta.env.VITE_API_KEY
@@ -23,6 +24,7 @@ function App() {
 
   const getPhotos = async () => {
     try {
+
       if (searchControl.current.value.trim()) {
         setErrorMessage('')
 
@@ -36,14 +38,13 @@ function App() {
           numberOfPages: data.total_pages
         })
       }
+
     } catch (error) {
       setCurrentPagePointer(0)
       setErrorMessage("No photos found. Please try with different search parameters.")
-
       console.log(error)
     }
   }
-
 
     const loadResults = () => {
       if ("" == errorMessage) {
@@ -51,6 +52,7 @@ function App() {
         getPhotos()
       }
     }
+
     const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       loadResults()
@@ -65,30 +67,33 @@ function App() {
 
   return (
     <div className='container'>
-      <h1 className="title">Photo Bucket</h1>
+
+      <h1 className="title">Your Photo Bucket</h1>
 
       <div className="search-section">
         <Form onSubmit={handleSearchSubmit}>
-          <Form.Control className='search-input' type="search" placeholder='What may we present?' ref={searchControl} />
+          <Form.Control className='search-input' type="search" placeholder='What may we present to you today?' ref={searchControl} />
         </Form>
       </div>
 
       <Recommender handleSelection={handleSelection} />
 
       <div className="photos-results">
-        {errorMessage ? <h4>{errorMessage}</h4> :
+        {
+        errorMessage ? <h4>{errorMessage}</h4> :
           <>
             <div className="result-summary">
-              {(0 != searchResultWithMetadata.totalPhotoCount) ? searchResultWithMetadata.totalPhotoCount : ""} Photos for you, from the world, of the universe!
+              {(0 != searchResultWithMetadata.totalPhotoCount) ? searchResultWithMetadata.totalPhotoCount : ""} Photos for you... from the world... of the universe!
             </div>
             {
               searchResultWithMetadata.searchedPhotos?.map(photo => {
                 return photo && (<a href={photo.urls.regular} target='_blank' key={photo.id}>
                   <img src={photo.urls.thumb} alt="photo.alt_description" className='image'></img>
                 </a>)
-              }
-              )}
-          </>}
+              })
+            }
+          </>
+          }
       </div>
 
       {
