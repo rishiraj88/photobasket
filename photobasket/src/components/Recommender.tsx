@@ -2,7 +2,7 @@
 type RecommenderProps = {
     handleSelection : (recommendation: string) => void
 }
-function Recommender({handleSelection}: RecommenderProps) {
+const Recommender : React.FC<RecommenderProps> = ({handleSelection}: RecommenderProps) =>{
   return (
     <div  className="recommendation">
     <div onClick={() => handleSelection("europe")}>europe</div>

@@ -15,7 +15,7 @@ type SearchResultWithMetadataType = {
   numberOfPages: number
 }
 
-function App() {
+const App = () => {
   const searchControl = useRef<HTMLInputElement>(null!)
 
   const [currentPagePointer, setCurrentPagePointer] = useState(0)

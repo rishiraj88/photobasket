@@ -18,7 +18,7 @@ type NavProps = {
     totalPages: number
 }
 
-const Nav = (props: NavProps) => {
+const Nav: React.FC<NavProps> = (props: NavProps) => {
     const initialState = { pageNumber: props.pageNumber }
     function reducer(state: CounterState, action: CounterAction) {
         switch (action.type) {
