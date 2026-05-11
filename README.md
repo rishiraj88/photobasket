@@ -8,4 +8,6 @@ Photo Search implemented with the following:
 - Development status: active
 - To secure the API access token (and more secrets) next
 
-## Second phase of development has starting now (in the year 2025).
+## Second phase of development is active
+- included revamp
+- evaluating the possibilities of introducing modern features, like comprehensive search or chatbot.
